@@ -2,7 +2,7 @@
 
 This Edge extension removes the link rewriting added by Microsoft Defender for Office 365 Advanced Threat Protection and Proofpoint Essentials URL Defense.
 
-It is designed to work for Superhuman, Gmail, and (though somewhat buggy) Outlook. (See [manifest.json](./manifest.json).)
+It is designed to work (but is buggy) for Superhuman, Gmail, and Outlook. (See [manifest.json](./manifest.json).)
 
 Links on the page are changed to the original link.
 
@@ -14,6 +14,7 @@ Clone the repo and sideload the extension into Edge following [these instruction
 
 ## Known issues
 
+* This is a janky proof-of-concept extension! It currently makes writing on Superhuman a little flaky, in particular when using modifier keys and arrows to move the cursor and select text.
 * Proofpoint Essentials URL Defense v3 regex is incomplete.
 * It does not always work with Outlook.
 * This does not handle nested use of both SafeLinks and URL Defense in the same link.
