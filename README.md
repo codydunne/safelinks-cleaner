@@ -1,4 +1,4 @@
-# Safe Links and URL Defense Cleaner
+# Safe Links and URL Defense Cleaner for Edge
 
 This Edge extension removes the link rewriting added by Microsoft Defender for Office 365 Advanced Threat Protection and Proofpoint Essentials URL Defense.
 
