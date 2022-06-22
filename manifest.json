@@ -12,8 +12,6 @@
         "128": "icon128x128.png"
     },
     "permissions": [
-        "clipboardWrite",
-        "contextMenus"
     ],
     "background": {
         "service_worker": "links.js"
@@ -33,7 +31,6 @@
             "js": [
                 "mutation.js",
                 "links.js",
-                "popup.js",
                 "content.js"
             ]
         }
