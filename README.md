@@ -15,6 +15,7 @@ Clone the repo and sideload the extention into Edge following [these instruction
 
 ## Known issues
 
+* This uses manifest v2 which will be going away come 2023!
 * Proofpoint Essentials URL Defense v3 regex is incomplete.
 * This does not handle nested use of both SafeLinks and URL Defense in the same link.
 
