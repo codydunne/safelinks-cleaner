@@ -1,0 +1,11 @@
+{
+    "extensionDescription": {
+	"message": "Correct the display and quoting of links mangled by Microsoft Defender for Office 365 Safe Links.",
+	"description": "Description of the extension."
+    },
+
+    "copyLinkMenuTitle": {
+	"message": "Copy original link",
+	"description": "Title of the \"copy original link\" menu item."
+    }
+}
