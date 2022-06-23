@@ -1,4 +1,4 @@
-// Safe Links Cleaner
+// Safe Links and URL Defense Cleaner for SuperHuman
 // Copyright 2021 David Byers <david.byers@liu.se>, 2022 Cody Dunne <c.dunne@northeastern.edu>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,27 +23,27 @@
 
 /**
  * Regexp that matches safe links and URL Defense links. The original URL must be collected
- * in match group 1.
+ * in match group 1. The `<` prefix is to catch plain text urls
  */
 const safelinksRegexp = new RegExp(
-  'https?://[^.]+[.]safelinks[.]protection[.]outlook[.]com/[?]url=([^&]+)&.*',
-  'gi',
-)
+  '<?https?://[^.]+[.]safelinks[.]protection[.]outlook[.]com/[?]url=([^&]+)&.*',
+  'gi'
+);
 
 const urlDefenseV1Regexp = new RegExp(
-  'https?://urldefense.proofpoint.com/v1//url\\?u=(.+?)&k=.*',
-  'gi',
-)
+  '<?https?://urldefense.proofpoint.com/v1//url\\?u=(.+?)&k=.*',
+  'gi'
+);
 
 const urlDefenseV2Regexp = new RegExp(
-  'https?://urldefense.proofpoint.com/v2/url\\?u=(.+?)&[dc]=.*',
-  'gi',
-)
+  '<?https?://urldefense.proofpoint.com/v2/url\\?u=(.+?)&[dc]=.*',
+  'gi'
+);
 
 const urlDefenseV3Regexp = new RegExp(
-  'https?://urldefense.com/v3/__(.+?)__;.*',
-  'gi',
-)
+  '<?https?://urldefense.com/v3/__(.+?)__;.*',
+  'gi'
+);
 
 /**
  * Return the original URL for a safe link.
@@ -77,53 +77,53 @@ let urls = [
  * @returns {string} The original link or the safe link if there was an error.
  */
 function untangleLink(link) {
-  let ret
+  let ret;
   if (safelinksRegexp.test(link)) {
     ret = link.replaceAll(safelinksRegexp, (match, url) => {
       try {
-        return decodeURIComponent(url)
+        return decodeURIComponent(url);
       } catch (e) {
-        console.log(e)
-        return url
+        console.log(e);
+        return url;
       }
-    })
+    });
   } else if (urlDefenseV1Regexp.test(link)) {
     ret = link.replaceAll(urlDefenseV1Regexp, (match, url) => {
       try {
-        return decodeURIComponent(url)
+        return decodeURIComponent(url);
       } catch (e) {
-        console.log(e)
-        return url
+        console.log(e);
+        return url;
       }
-    })
+    });
   } else if (urlDefenseV2Regexp.test(link)) {
     ret = link.replaceAll(urlDefenseV2Regexp, (match, url) => {
       try {
-        let urlEncodedUrl = url.replace(/-/g, '%')
-        let htmlEncodedUrl = urlEncodedUrl.replace(/_/g, '/')
-        return decodeURIComponent(htmlEncodedUrl)
+        let urlEncodedUrl = url.replace(/-/g, '%');
+        let htmlEncodedUrl = urlEncodedUrl.replace(/_/g, '/');
+        return decodeURIComponent(htmlEncodedUrl);
       } catch (e) {
-        console.log(e)
-        return url
+        console.log(e);
+        return url;
       }
-    })
+    });
   } else if (urlDefenseV3Regexp.test(link)) {
     // Version 3. Not tested!
     ret = link.replaceAll(urlDefenseV3Regexp, (match, url) => {
       try {
-        let urlEncodedUrl = url.replace(/-/g, '%')
-        let htmlEncodedUrl = urlEncodedUrl.replace(/_/g, '/')
-        return decodeURIComponent(htmlEncodedUrl)
+        let urlEncodedUrl = url.replace(/-/g, '%');
+        let htmlEncodedUrl = urlEncodedUrl.replace(/_/g, '/');
+        return decodeURIComponent(htmlEncodedUrl);
       } catch (e) {
-        console.log(e)
-        return url
+        console.log(e);
+        return url;
       }
-    })
+    });
   } else {
-    ret = link
+    ret = link;
   }
 
-  return ret
+  return ret;
 }
 
 /**
@@ -137,7 +137,7 @@ function isTangledLink(link) {
     link.match(urlDefenseV1Regexp) ||
     link.match(urlDefenseV2Regexp) ||
     link.match(urlDefenseV3Regexp)
-  )
+  );
 }
 
 /**
@@ -147,11 +147,11 @@ function isTangledLink(link) {
 function removeAllTheLinks(root) {
   for (const link of getAllLinks(root)) {
     if (isTangledLink(link.href)) {
-      link.href = untangleLink(link.href)
+      link.href = untangleLink(link.href);
     }
   }
   for (const textNode of getTextNodes(root)) {
-    textNode.textContent = untangleLink(textNode.textContent)
+    textNode.textContent = untangleLink(textNode.textContent);
   }
 }
 
@@ -161,31 +161,38 @@ function removeAllTheLinks(root) {
  * @returns {Element[]} The link elements under elem.
  */
 function getAllLinks(elem) {
-  var result = []
-  if (elem) {
+  var result = [];
+  // Don't mess with SuperHuman compose editors to avoid text selection & cursor movement bugs
+  if (
+    elem
+    // !(elem.classList && elem.classList.contains("ComposeFormEditor"))
+  ) {
     // Recurse through, adding <a> nodes to the result
     for (var nodes = elem.childNodes, i = nodes.length; i--; ) {
-      let node = nodes[i]
-      let nodeType = node.nodeType
+      let node = nodes[i];
+      let nodeType = node.nodeType;
 
       if (node.tagName == 'A') {
-        result.push(node)
+        // Don't mess with SuperHuman compose editors user-editable portion to avoid text selection & cursor movement bugs
+        if (isntSuperHumanUnquotedComposeField(node)) {
+          result.push(node);
+        }
       } else if (
         nodeType == Node.ELEMENT_NODE ||
         nodeType == Node.DOCUMENT_NODE ||
         nodeType == Node.DOCUMENT_FRAGMENT_NODE
       ) {
-        result = result.concat(getAllLinks(node))
+        result = result.concat(getAllLinks(node));
       }
     }
 
     // Also search through included shadow roots, like Superhuman uses for each email
     if (elem.shadowRoot) {
-      let node = elem.shadowRoot
-      result = result.concat(getAllLinks(node))
+      let node = elem.shadowRoot;
+      result = result.concat(getAllLinks(node));
     }
   }
-  return result
+  return result;
 }
 
 /**
@@ -194,41 +201,81 @@ function getAllLinks(elem) {
  * @returns {Element[]} The text elements under elem.
  */
 function getTextNodes(elem) {
-  var result = []
+  var result = [];
   if (elem) {
     // Remove <wbr> tags separating text nodes inside <a> tags. Superhuman inserts
     // these for links and it makes it hard to find and rewrite them.
-    if (elem.tagName == 'A' && elem.hasChildNodes) {
+    if (
+      elem.tagName == 'A' &&
+      elem.hasChildNodes &&
+      isntSuperHumanUnquotedComposeField(elem) // Don't mess with SuperHuman compose editors user-editable portion to avoid text selection & cursor movement bugs
+    ) {
       // Remove the <wbr> tags
-      let wbrs = Array.from(elem.getElementsByTagName('wbr'))
+      let wbrs = Array.from(elem.getElementsByTagName('wbr'));
       if (wbrs.length > 0) {
-        wbrs.forEach((aWBR) => aWBR.remove())
+        wbrs.forEach((aWBR) => aWBR.remove());
 
         // Combine adjacent <text> tags and remove blank ones
-        elem.normalize()
+        elem.normalize();
       }
     }
 
     // Recurse through, adding <text> nodes to the result
-    for (var nodes = elem.childNodes, i = nodes.length; i--; ) {
-      let node = nodes[i]
-      let nodeType = node.nodeType
+    for (let nodes = elem.childNodes, i = nodes.length; i--; ) {
+      let node = nodes[i];
+      let nodeType = node.nodeType;
       if (nodeType == Node.TEXT_NODE) {
-        result.push(node)
+        // Don't mess with SuperHuman compose editors user-editable portion to avoid text selection & cursor movement bugs
+        if (isntSuperHumanUnquotedComposeField(node)) {
+          result.push(node);
+        }
       } else if (
         nodeType == Node.ELEMENT_NODE ||
         nodeType == Node.DOCUMENT_NODE ||
         nodeType == Node.DOCUMENT_FRAGMENT_NODE
       ) {
-        result = result.concat(getTextNodes(node))
+        result = result.concat(getTextNodes(node));
       }
     }
 
     // Also search through included shadow roots, like Superhuman uses for each email
     if (elem.shadowRoot) {
-      let node = elem.shadowRoot
-      result = result.concat(getTextNodes(node))
+      let node = elem.shadowRoot;
+      result = result.concat(getTextNodes(node));
     }
   }
-  return result
+  return result;
+}
+
+/**
+ * Determines whether we should affect this part of the SuperHuman compose field. If we affect the
+ * user-editable part, it creates interaction issues with using arrow keys to select text,
+ * double-click on text. Specifically,to see whether a parent with class `sh-quoted-content` is closer
+ * than a parent with class `sh-unquoted-content`.
+ * @param {Element} elem - The element to look at the parents of.
+ */
+function isntSuperHumanUnquotedComposeField(elem) {
+  const superHumanContentSelector = '.sh-quoted-content, .sh-unquoted-content';
+  let parent =
+    elem.parentElement && elem.parentElement.closest(superHumanContentSelector);
+  if (!parent) {
+    // neither class is in the hierarchy above this
+    return true;
+  } else {
+    while (parent) {
+      if (parent.classList.contains('sh-quoted-content')) {
+        return true;
+      } else if (parent.classList.contains('sh-unquoted-content')) {
+        return false;
+      }
+      parent =
+        parent.parentElement &&
+        parent.parentElement.closest(superHumanContentSelector);
+    }
+
+    throw (
+      'Illegal state exception! If we got here one of the parents should have been classed sh-quoted-content or sh-unquoted-content. Element: ' +
+      elem
+    );
+  }
 }

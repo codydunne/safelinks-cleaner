@@ -1,11 +1,11 @@
 {
-    "extensionDescription": {
-	"message": "Korrigera visning och citering av länkar manglade av Microsoft Defender för Office 365 Safe Links, Proofpoint Essentials URL Defense.",
-	"description": "Description of the extension."
-    },
+  "extensionDescription": {
+    "message": "Korrigera visning och citering av länkar manglade av Microsoft Defender för Office 365 Safe Links, Proofpoint Essentials URL Defense.",
+    "description": "Description of the extension."
+  },
 
-    "copyLinkMenuTitle": {
-	"message": "Kopiera ursprunglig länk",
-	"description": "Title of the copy original link menu item."
-    }
+  "copyLinkMenuTitle": {
+    "message": "Kopiera ursprunglig länk",
+    "description": "Title of the copy original link menu item."
+  }
 }

@@ -1,38 +1,25 @@
 {
-    "manifest_version": 3,
-    "name": "Safe Links and URL Defense Cleaner",
-    "description": "__MSG_extensionDescription__",
-    "version": "1.0.0",
-    "author": "David Byers, Cody Dunne",
-    "homepage_url": "https://github.com/codydunne/safelinks-cleaner",
-    "default_locale": "en",
-    "icons": {
-        "16": "icon16x16.png",
-        "32": "icon32x32.png",
-        "128": "icon128x128.png"
-    },
-    "permissions": [
-    ],
-    "background": {
-        "service_worker": "links.js"
-    },
-    "content_scripts": [
-        {
-            "matches": [
-                "*://outlook.office.com/*",
-                "*://outlook.office365.com/*",
-                "*://outlook.office365.us/*",
-                "*://mail.superhuman.com/*",
-                "*://mail.google.com/*"
-            ],
-            "css": [
-                "style.css"
-            ],
-            "js": [
-                "mutation.js",
-                "links.js",
-                "content.js"
-            ]
-        }
-    ]
+  "manifest_version": 3,
+  "name": "Safe Links and URL Defense Cleaner for SuperHuman",
+  "description": "__MSG_extensionDescription__",
+  "version": "1.0.0",
+  "author": "David Byers, Cody Dunne",
+  "homepage_url": "https://github.com/codydunne/safelinks-cleaner",
+  "default_locale": "en",
+  "icons": {
+    "16": "icon16x16.png",
+    "32": "icon32x32.png",
+    "128": "icon128x128.png"
+  },
+  "permissions": [],
+  "background": {
+    "service_worker": "links.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://mail.superhuman.com/*"],
+      "css": ["style.css"],
+      "js": ["mutation.js", "links.js", "content.js"]
+    }
+  ]
 }

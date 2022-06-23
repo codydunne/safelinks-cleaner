@@ -21,18 +21,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 #safelinks-cleaner-thunderbird-popup {
-    display: none;
-    background: #555555;
-    color: #ffffff;
-    padding: 3px 3px 4px 3px;
-    position: absolute;
-    z-index: 1000;
-    border: 1px solid black;
-    font: 12px sans-serif;
+  display: none;
+  background: #555555;
+  color: #ffffff;
+  padding: 3px 3px 4px 3px;
+  position: absolute;
+  z-index: 1000;
+  border: 1px solid black;
+  font: 12px sans-serif;
 }
 
 #safelinks-cleaner-thunderbird-popup.safelinks-cleaner-thunderbird-popup-visible {
-    display: block;
+  display: block;
 }

@@ -1,4 +1,4 @@
-// Safe Links Cleaner
+// Safe Links and URL Defense Cleaner for SuperHuman
 // Copyright 2021 David Byers <david.byers@liu.se>, 2022 Cody Dunne <c.dunne@northeastern.edu>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,14 @@
 
 // Mutation observer for web browsers
 
-let mutationObserver = null
+let mutationObserver = null;
 
 /**
  * Handle mutation events. Attempts to detect a composition pane and
  * remove nasty links from it.
  */
 function mutationHandler(mutationsList, observer) {
-  removeAllTheLinks(document.body, true)
+  removeAllTheLinks(document.body, true);
 }
 
 /**
@@ -37,13 +37,13 @@ function mutationHandler(mutationsList, observer) {
 function enableMutationObserver() {
   if (!mutationObserver) {
     mutationObserver = new MutationObserver(
-      withoutMutationObserver(mutationHandler),
-    )
+      withoutMutationObserver(mutationHandler)
+    );
   }
   mutationObserver.observe(document.body, {
     childList: true,
     subtree: true,
-  })
+  });
 }
 
 /**
@@ -51,7 +51,7 @@ function enableMutationObserver() {
  */
 function disableMutationObserver() {
   if (mutationObserver) {
-    mutationObserver.disconnect()
+    mutationObserver.disconnect();
   }
 }
 
@@ -64,10 +64,10 @@ function disableMutationObserver() {
 function withoutMutationObserver(func) {
   return (...args) => {
     try {
-      disableMutationObserver()
-      func(...args)
+      disableMutationObserver();
+      func(...args);
     } finally {
-      enableMutationObserver()
+      enableMutationObserver();
     }
-  }
+  };
 }

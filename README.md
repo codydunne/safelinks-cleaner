@@ -1,8 +1,6 @@
-# Safe Links and URL Defense Cleaner for Edge
+# Safe Links and URL Defense Cleaner for Superhuman & Edge
 
-This Edge extension removes the link rewriting added by Microsoft Defender for Office 365 Advanced Threat Protection and Proofpoint Essentials URL Defense.
-
-It is designed to work (but is buggy) for Superhuman, Gmail, and Outlook. (See [manifest.json](./manifest.json).)
+This Edge extension for use with SuperHuman removes the link rewriting added by Microsoft Defender for Office 365 Advanced Threat Protection and Proofpoint Essentials URL Defense.
 
 Links on the page are changed to the original link.
 
@@ -14,9 +12,21 @@ Clone the repo and sideload the extension into Edge following [these instruction
 
 ## Known issues
 
-* This is a janky proof-of-concept extension! It currently makes writing on Superhuman a little flaky, in particular when using modifier keys and arrows to move the cursor and select text.
+* This is a janky proof-of-concept extension!
 * Proofpoint Essentials URL Defense v3 regex is incomplete.
-* It does not always work with Outlook.
+* It generally would work with Outlook and Gmail, but the message compose field needs to be treated differently (just like the SuperHuman compose fields). This wouldn't be hard to do. If you want to try it, just add the sites you want it to work on in [manifest.json](./manifest.json). E.g.,
+
+    ```js
+    "matches": [
+        "*://outlook.office.com/*",
+        "*://outlook.office365.com/*",
+        "*://outlook.office365.us/*",
+        "*://mail.superhuman.com/*",
+        "*://mail.google.com/*"
+    ],
+    ```
+
+* If you copy and paste a SafeLink or URL Defense link into a compose window, it will not be cleaned. Continuously cleaning the compose window creates UI issues with text selection and cursor movement.
 * This does not handle nested use of both SafeLinks and URL Defense in the same link.
 
 ## Attribution

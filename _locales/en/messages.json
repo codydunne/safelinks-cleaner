@@ -1,11 +1,11 @@
 {
-    "extensionDescription": {
-	"message": "Removes the link rewriting added by Microsoft Defender for Office 365 Advanced Threat Protection and Proofpoint Essentials URL Defense.",
-	"description": "Description of the extension."
-    },
+  "extensionDescription": {
+    "message": "Removes the link rewriting added by Microsoft Defender for Office 365 Advanced Threat Protection and Proofpoint Essentials URL Defense.",
+    "description": "Description of the extension."
+  },
 
-    "copyLinkMenuTitle": {
-	"message": "Copy original link",
-	"description": "Title of the \"copy original link\" menu item."
-    }
+  "copyLinkMenuTitle": {
+    "message": "Copy original link",
+    "description": "Title of the \"copy original link\" menu item."
+  }
 }
