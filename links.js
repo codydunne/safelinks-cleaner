@@ -146,12 +146,14 @@ function isTangledLink(link) {
  */
 function removeAllTheLinks(root) {
   for (const link of getAllLinks(root)) {
-    if (isTangledLink(link.href)) {
+    if (isTangledLink(link.href)) {// This check prevents dom changes that screw with cursor placement
       link.href = untangleLink(link.href);
     }
   }
   for (const textNode of getTextNodes(root)) {
-    textNode.textContent = untangleLink(textNode.textContent);
+    if (isTangledLink(textNode.textContent)) {// This check prevents dom changes that screw with cursor placement
+      textNode.textContent = untangleLink(textNode.textContent);
+    }
   }
 }
 

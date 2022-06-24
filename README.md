@@ -26,6 +26,7 @@ Clone the repo and sideload the extension into Edge following [these instruction
     ],
     ```
 
+* This could also work with Google Calendar events that have SafeLinks in the description by addressing html blobs rather than just text fields.
 * If you copy and paste a SafeLink or URL Defense link into a compose window, it will not be cleaned. Continuously cleaning the compose window creates UI issues with text selection and cursor movement.
 * This does not handle nested use of both SafeLinks and URL Defense in the same link.
 
